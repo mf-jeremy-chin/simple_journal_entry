@@ -5,10 +5,8 @@ package com.okeicalm.simpleJournalEntry.infra.db.tables
 
 
 import com.okeicalm.simpleJournalEntry.infra.db.SimpleJournalEntryDb
-import com.okeicalm.simpleJournalEntry.infra.db.indexes.JOURNAL_ENTRIES_FK_ACCOUNT
-import com.okeicalm.simpleJournalEntry.infra.db.indexes.JOURNAL_ENTRIES_FK_JOURNAL
-import com.okeicalm.simpleJournalEntry.infra.db.keys.JOURNAL_ENTRIES_IBFK_1
-import com.okeicalm.simpleJournalEntry.infra.db.keys.JOURNAL_ENTRIES_IBFK_2
+import com.okeicalm.simpleJournalEntry.infra.db.keys.FK_ACCOUNT
+import com.okeicalm.simpleJournalEntry.infra.db.keys.FK_JOURNAL
 import com.okeicalm.simpleJournalEntry.infra.db.keys.KEY_JOURNAL_ENTRIES_PRIMARY
 import com.okeicalm.simpleJournalEntry.infra.db.tables.records.JournalEntriesRecord
 
@@ -17,7 +15,6 @@ import kotlin.collections.List
 import org.jooq.Field
 import org.jooq.ForeignKey
 import org.jooq.Identity
-import org.jooq.Index
 import org.jooq.Name
 import org.jooq.Record
 import org.jooq.Row5
@@ -116,22 +113,21 @@ open class JournalEntries(
 
     constructor(child: Table<out Record>, key: ForeignKey<out Record, JournalEntriesRecord>): this(Internal.createPathAlias(child, key), child, key, JOURNAL_ENTRIES, null)
     override fun getSchema(): Schema? = if (aliased()) null else SimpleJournalEntryDb.SIMPLE_JOURNAL_ENTRY_DB
-    override fun getIndexes(): List<Index> = listOf(JOURNAL_ENTRIES_FK_ACCOUNT, JOURNAL_ENTRIES_FK_JOURNAL)
     override fun getIdentity(): Identity<JournalEntriesRecord, Long?> = super.getIdentity() as Identity<JournalEntriesRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<JournalEntriesRecord> = KEY_JOURNAL_ENTRIES_PRIMARY
-    override fun getReferences(): List<ForeignKey<JournalEntriesRecord, *>> = listOf(JOURNAL_ENTRIES_IBFK_1, JOURNAL_ENTRIES_IBFK_2)
+    override fun getReferences(): List<ForeignKey<JournalEntriesRecord, *>> = listOf(FK_JOURNAL, FK_ACCOUNT)
 
     private lateinit var _journals: Journals
     private lateinit var _accounts: Accounts
     fun journals(): Journals {
         if (!this::_journals.isInitialized)
-            _journals = Journals(this, JOURNAL_ENTRIES_IBFK_1)
+            _journals = Journals(this, FK_JOURNAL)
 
         return _journals;
     }
     fun accounts(): Accounts {
         if (!this::_accounts.isInitialized)
-            _accounts = Accounts(this, JOURNAL_ENTRIES_IBFK_2)
+            _accounts = Accounts(this, FK_ACCOUNT)
 
         return _accounts;
     }
