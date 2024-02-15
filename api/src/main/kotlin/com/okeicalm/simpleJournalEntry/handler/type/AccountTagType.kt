@@ -10,7 +10,7 @@ const val accountTagTypeGraphQLName = "AccountTag"
 data class AccountTagType(
         val id: ID,
         val name: String,
-        val accountID: ID, // should this actually be ID?
+        val accountID: ID,
 ) {
     constructor(tag: AccountTag) : this(
         ID(tag.id.toString()),

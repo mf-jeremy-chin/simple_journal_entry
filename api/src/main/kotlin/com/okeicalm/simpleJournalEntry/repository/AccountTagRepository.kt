@@ -35,7 +35,6 @@ class TagRepositoryImpl(private val dslContext: DSLContext) : AccountTagReposito
             .fetchOne(ACCOUNT_TAG, ACCOUNT_TAG.ID.eq(id))
             ?.into(AccountTag::class.java)
     }
-    // need a list-by-accounts
 
     override fun findByAccountId(accountId: Long): List<AccountTag> {
         return dslContext
@@ -51,7 +50,6 @@ class TagRepositoryImpl(private val dslContext: DSLContext) : AccountTagReposito
     }
 
     override fun create(tag: AccountTag): AccountTag {
-        // For AccountTag
         val record = dslContext
             .newRecord(ACCOUNT_TAG)
                 .apply {
@@ -64,7 +62,7 @@ class TagRepositoryImpl(private val dslContext: DSLContext) : AccountTagReposito
     }
 
     override fun update(id: Long, name: String): AccountTag? {
-        var tag: AccountTag? = dslContext
+        val tag: AccountTag? = dslContext
                 .fetchOne(ACCOUNT_TAG, ACCOUNT_TAG.ID.eq(id))
                 ?.into(AccountTag::class.java)
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 data class AccountTagUpdateUseCaseInput(val id: Long, val name: String)
-data class AccountTagUpdateUseCaseOutput(val account: AccountTag?)
+data class AccountTagUpdateUseCaseOutput(val accountTag: AccountTag?)
 
 interface AccountTagUpdateUseCase {
     fun call(input: AccountTagUpdateUseCaseInput): AccountTagUpdateUseCaseOutput

@@ -5,12 +5,8 @@ import com.okeicalm.simpleJournalEntry.repository.AccountTagRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-// this is teh Long that's being stupid, right?
-// but we have Long in other plaecs... wtf?
-// or is it on the output...?
-// OH use case is separate, check the mutation side!
 data class AccountTagCreateUseCaseInput(val name: String, val accountId: Long)
-data class AccountTagCreateUseCaseOutput(val account: AccountTag)
+data class AccountTagCreateUseCaseOutput(val accountTag: AccountTag)
 
 interface AccountTagCreateUseCase {
     fun call(input: AccountTagCreateUseCaseInput): AccountTagCreateUseCaseOutput
