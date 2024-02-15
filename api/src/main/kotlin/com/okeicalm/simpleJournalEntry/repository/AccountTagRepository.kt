@@ -38,7 +38,16 @@ class TagRepositoryImpl(private val dslContext: DSLContext) : AccountTagReposito
     // need a list-by-accounts
 
     override fun findByAccountId(accountId: Long): List<AccountTag> {
-        return ArrayList()
+        return dslContext
+                .select(
+                ACCOUNT_TAG.ID,
+                ACCOUNT_TAG.NAME,
+                ACCOUNT_TAG.ACCOUNT_ID
+        )
+                .from(ACCOUNT_TAG)
+                .where(ACCOUNT_TAG.ACCOUNT_ID.eq(accountId))
+                .fetch()
+                .into(AccountTag::class.java)
     }
 
     override fun create(tag: AccountTag): AccountTag {

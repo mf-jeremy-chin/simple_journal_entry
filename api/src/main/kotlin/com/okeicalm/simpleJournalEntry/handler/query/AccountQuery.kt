@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component
 @Component
 class AccountQuery(private val repository: AccountRepository, private val repository2: AccountTagRepository) : Query {
     fun allAccounts(): List<AccountType> {
+        // adding tags to this should work, but... is that right? in terms of performance making it only query when
+        // required would be better
+        // what does that even look like in graphql?
         return repository.findAll().map { AccountType(it) }
     }
 
@@ -17,5 +20,9 @@ class AccountQuery(private val repository: AccountRepository, private val reposi
     // that's AccountRepository but .... can I inject another one?
     fun allAcountTags(): List<AccountTagType> {
         return repository2.findAll().map { AccountTagType(it) }
+    }
+
+    fun accountTags(accountId: ID):  List<AccountTagType> {
+        return repository2.findByAccountId(accountId.toString().toLong()).map { AccountTagType(it) }
     }
 }
