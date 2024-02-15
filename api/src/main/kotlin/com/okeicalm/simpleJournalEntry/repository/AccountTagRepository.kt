@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository
 interface AccountTagRepository {
     fun findAll(): List<AccountTag>
     fun findById(id: Long): AccountTag?
+
+    fun findByAccountId(accountId: Long): List<AccountTag>
     fun create(tag: AccountTag): AccountTag
 
     fun update(id: Long, name: String): AccountTag?
+    fun delete(id: Long): Long
 }
 
 @Repository
@@ -33,6 +36,10 @@ class TagRepositoryImpl(private val dslContext: DSLContext) : AccountTagReposito
             ?.into(AccountTag::class.java)
     }
     // need a list-by-accounts
+
+    override fun findByAccountId(accountId: Long): List<AccountTag> {
+        return ArrayList()
+    }
 
     override fun create(tag: AccountTag): AccountTag {
         // For AccountTag
@@ -61,5 +68,12 @@ class TagRepositoryImpl(private val dslContext: DSLContext) : AccountTagReposito
                     .execute()
         }
         return tag
+    }
+
+    override fun delete(id: Long): Long {
+        dslContext.delete(ACCOUNT_TAG)
+                .where(ACCOUNT_TAG.ID.eq(id))
+                .execute()
+        return id
     }
 }
